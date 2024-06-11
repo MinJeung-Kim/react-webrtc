@@ -18,18 +18,25 @@ const io = new socket_io_1.Server(server, {
     },
 });
 io.on("connection", (socket) => {
-    console.log("a user connected:", socket.id);
-    socket.on("offer", (payload) => {
-        io.to(payload.target).emit("offer", payload);
+    console.log("A user connected:", socket.id);
+    socket.on("join", (room) => {
+        socket.join(room);
+        console.log(`User ${socket.id} joined room: ${room}`);
     });
-    socket.on("answer", (payload) => {
-        io.to(payload.target).emit("answer", payload);
+    socket.on("offer", (data) => {
+        console.log(`Offer from ${data.caller} to room ${data.room}`);
+        socket.to(data.room).emit("offer", data);
     });
-    socket.on("ice-candidate", (incoming) => {
-        io.to(incoming.target).emit("ice-candidate", incoming.candidate);
+    socket.on("answer", (data) => {
+        console.log(`Answer from ${data.target} to room ${data.room}`);
+        socket.to(data.room).emit("answer", data);
+    });
+    socket.on("ice-candidate", (data) => {
+        console.log(`ICE Candidate from ${data.target} to room ${data.room}`);
+        socket.to(data.room).emit("ice-candidate", data);
     });
     socket.on("disconnect", () => {
-        console.log("user disconnected:", socket.id);
+        console.log("User disconnected:", socket.id);
     });
 });
 server.listen(port, () => {
