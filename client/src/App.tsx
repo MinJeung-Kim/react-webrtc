@@ -16,10 +16,6 @@ function App() {
 function RoutesWithNavigation() {
   const navigate = useNavigate();
 
-  const onCreateRoom = () => {
-    navigate("/");
-  };
-
   const onLogout = () => {
     if (window.confirm("Do you want to log out?")) {
       // logout();
@@ -29,11 +25,7 @@ function RoutesWithNavigation() {
 
   return (
     <>
-      <Header
-        username={"Roxie"}
-        onLogout={onLogout}
-        onCreateRoom={onCreateRoom}
-      />
+      <Header username={"Roxie"} onLogout={onLogout} />
       <Routes>
         <Route path="/" element={<CreateRoom />} />
         <Route path="/:roomId" element={<Conference />} />

@@ -47,7 +47,7 @@ export default function Conference() {
     await addIceCandidate(message.candidate);
   };
 
-  const { log, joinRoom, sendOffer, sendAnswer, sendIceCandidate, socketId } =
+  const { joinRoom, sendOffer, sendAnswer, sendIceCandidate, socketId } =
     useSocket(
       handleReceiveOffer,
       handleReceiveAnswer,
@@ -81,25 +81,18 @@ export default function Conference() {
 
   return (
     <div>
-      <div>
-        <video
-          ref={localVideoRef}
-          autoPlay
-          playsInline
-          style={{ width: "45%", margin: "2.5%" }}
-        />
-        <video
-          ref={remoteVideoRef}
-          autoPlay
-          playsInline
-          style={{ width: "45%", margin: "2.5%" }}
-        />
-      </div>
-      <pre>
-        {log.map((entry, index) => (
-          <div key={index}>{entry}</div>
-        ))}
-      </pre>
+      <video
+        ref={localVideoRef}
+        autoPlay
+        playsInline
+        style={{ width: "45%", margin: "2.5%" }}
+      />
+      <video
+        ref={remoteVideoRef}
+        autoPlay
+        playsInline
+        style={{ width: "45%", margin: "2.5%" }}
+      />
     </div>
   );
 }

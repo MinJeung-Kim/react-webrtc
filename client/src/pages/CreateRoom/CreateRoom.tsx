@@ -11,6 +11,7 @@ export default function CreateRoom() {
       navigate(`/${room}`);
     }
   };
+
   return (
     <div className={styles.create_room}>
       <input

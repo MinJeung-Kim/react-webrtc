@@ -5,9 +5,8 @@ import styles from "./style.module.scss";
 type Props = {
   username: string;
   onLogout: () => void;
-  onCreateRoom: () => void;
 };
-export const Header = memo(({ username, onLogout, onCreateRoom }: Props) => {
+export const Header = memo(({ username, onLogout }: Props) => {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
@@ -17,7 +16,6 @@ export const Header = memo(({ username, onLogout, onCreateRoom }: Props) => {
       </div>
       {username && (
         <nav className={styles.menu}>
-          <button onClick={onCreateRoom}>Create Room</button>
           <button className={styles.menu_item} onClick={onLogout}>
             Logout
           </button>
