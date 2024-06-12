@@ -1,0 +1,40 @@
+@import "./Fonts.css";
+@import "./reset.css";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  accent-color: var(--color-accent);
+}
+
+:root {
+  --color-bg: #f5f5f5;
+  --color-text: #8a8a8d;
+  --color-accent: #2f65e5;
+  --color-disabled: #b1bbd1;
+  --color-hover: #9aa3e5;
+
+  --color-border: #e3e3e5;
+  --color-base: rgb(166, 170, 182);
+  --color-base-accent: #60607d;
+
+  --color-bg-dark: #11101d;
+  --color-dark-text: #fff;
+  --color-nav-header: #fff;
+  --color-nav-header-text: #888;
+
+  --content-padding: 20px;
+  --content-boxShadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  --content-button-radius: 20px;
+}
+
+html.dark {
+  --color-nav-header: #2b2a2c;
+  --color-bg: #11101d;
+  --color-text: #fff;
+  --color-nav-header-text: #fff;
+}

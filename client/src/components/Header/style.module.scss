@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-white);
+  padding: 8px;
+}
+
+.logo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+
+  .logo_img {
+    width: 4rem;
+    height: auto;
+  }
+  .logo_name {
+    font-size: 2rem;
+  }
+  .logo_user {
+    font-size: 0.7rem;
+    color: var(--color-blue);
+    padding-top: 8px;
+  }
+}
+
+.menu {
+  color: var(--color-white);
+  .menu_item {
+    color: var(--color-white);
+    font-weight: bold;
+  }
+}
