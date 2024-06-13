@@ -1,9 +1,12 @@
+import { camerOptionAtom } from "@src/store/atom";
+import { useAtom } from "jotai";
 import { useRef } from "react";
 
 export const useWebRTC = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null); // 로컬 비디오 요소에 대한 참조
   const remoteVideoRef = useRef<HTMLVideoElement>(null); // 원격 비디오 요소에 대한 참조
   const peerConnection = useRef<RTCPeerConnection | null>(null); // 피어 연결 객체에 대한 참조
+  const [camerOptions, setCamerOptions] = useAtom(camerOptionAtom);
 
   // 피어 연결을 초기화하는 함수
   const initializePeerConnection = (
@@ -16,8 +19,8 @@ export const useWebRTC = () => {
         { urls: "stun:stun.l.google.com:19302" }, // STUN 서버
         {
           urls: "turn:localhost:3478", // TURN 서버
-          username: import.meta.env.REACT_APP_TURN_USERNAME, // TURN 서버 사용자명
-          credential: import.meta.env.REACT_APP_TURN_CREDENTIAL, // TURN 서버 비밀번호
+          username: "coturn", // TURN 서버 사용자명
+          credential: "admin", // TURN 서버 비밀번호
         },
       ],
     });
@@ -64,30 +67,74 @@ export const useWebRTC = () => {
   };
 
   // 사용자의 미디어 스트림을 가져오는 함수
-  const getUserMedia = async () => {
-    // 비디오와 오디오 스트림 요청
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: true,
+  // const getUserMedia = async () => {
+  //   // 비디오와 오디오 스트림 요청
+  //   const stream = await navigator.mediaDevices.getUserMedia({
+  //     video: true,
+  //     audio: true,
+  //   });
+
+  //   if (localVideoRef.current) {
+  //     // 로컬 비디오 요소에 스트림 설정
+  //     localVideoRef.current.srcObject = stream;
+  //   }
+  //   stream.getTracks().forEach((track) => {
+  //     peerConnection.current?.addTrack(track, stream); // 각 트랙을 피어 연결에 추가
+  //   });
+  //   return stream;
+  // };
+
+  const getCameras = async () => {
+    // user 장치 리스트 가져오기
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    // 여러 내장 장치 중 카메라만 가져오기
+    const cameras = devices.filter((device) => device.kind === "videoinput");
+    console.log("getCameras : ", cameras);
+
+    setCamerOptions(cameras);
+  };
+
+  const getMedia = async (deviceId?: string) => {
+    const initialConstrains = {
       audio: true,
-    });
-    if (localVideoRef.current) {
-      // 로컬 비디오 요소에 스트림 설정
-      localVideoRef.current.srcObject = stream;
+      video: { facingMode: "user" },
+    };
+    const cameraConstrains = {
+      audio: true,
+      video: { deviceId: { exact: deviceId } },
+    };
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(
+        deviceId ? cameraConstrains : initialConstrains
+      );
+      if (localVideoRef.current) {
+        // 로컬 비디오 요소에 스트림 설정
+        localVideoRef.current.srcObject = stream;
+      }
+
+      stream.getTracks().forEach((track) => {
+        peerConnection.current?.addTrack(track, stream); // 각 트랙을 피어 연결에 추가
+      });
+
+      if (!deviceId) {
+        await getCameras();
+      }
+      return stream;
+    } catch (err) {
+      console.log(err);
     }
-    stream.getTracks().forEach((track) => {
-      peerConnection.current?.addTrack(track, stream); // 각 트랙을 피어 연결에 추가
-    });
-    return stream;
   };
 
   return {
     localVideoRef,
     remoteVideoRef,
+    camerOptions,
     initializePeerConnection,
     createOffer,
     createAnswer,
     setRemoteDescription,
     addIceCandidate,
-    getUserMedia,
+    // getUserMedia,
+    getMedia,
   };
 };

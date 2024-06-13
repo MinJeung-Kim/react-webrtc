@@ -1,14 +1,17 @@
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { Provider as JotaiProvider } from "jotai";
+import RoomPage from "./pages/Room/Room";
+import LobbyPage from "./pages/Lobby/Lobby";
 import { Header } from "./components/Header/Header";
-import Conference from "./pages/Conference";
-import CreateRoom from "./pages/CreateRoom/CreateRoom";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <RoutesWithNavigation />
+        <JotaiProvider>
+          <RoutesWithNavigation />
+        </JotaiProvider>
       </BrowserRouter>
     </div>
   );
@@ -27,8 +30,8 @@ function RoutesWithNavigation() {
     <>
       <Header username={"Roxie"} onLogout={onLogout} />
       <Routes>
-        <Route path="/" element={<CreateRoom />} />
-        <Route path="/:roomId" element={<Conference />} />
+        <Route path="/" element={<LobbyPage />} />
+        <Route path="/:roomId" element={<RoomPage />} />
       </Routes>
     </>
   );

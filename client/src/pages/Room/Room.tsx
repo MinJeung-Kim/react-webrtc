@@ -1,7 +1,10 @@
-import { useSocket } from "@src/hooks/useSocket";
-import { useWebRTC } from "@src/hooks/useWebRTC ";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSocket } from "@src/hooks/useSocket";
+import { useWebRTC } from "@src/hooks/useWebRTC ";
+import styles from "./style.module.scss";
+import { useAtomValue } from "jotai";
+import { camerOptionAtom } from "@src/store/atom";
 
 interface SignalData {
   caller: string;
@@ -18,19 +21,20 @@ interface IceCandidateData {
   };
 }
 
-export default function Conference() {
+export default function RoomPage() {
   const { roomId } = useParams<{ roomId: string }>();
-  const [isConnected, setIsConnected] = useState(false);
+  const [selectedCamera, setSelectedCamera] = useState("");
 
   const {
     localVideoRef,
     remoteVideoRef,
+    camerOptions,
     initializePeerConnection,
     createOffer,
     createAnswer,
     setRemoteDescription,
     addIceCandidate,
-    getUserMedia,
+    getMedia,
   } = useWebRTC();
 
   const handleReceiveOffer = async (message: SignalData) => {
@@ -68,12 +72,11 @@ export default function Conference() {
       }
     });
 
-    await getUserMedia();
+    await getMedia();
 
     const offer = await createOffer();
     if (socketId) {
       sendOffer(socketId, offer!, roomId!);
-      setIsConnected(true);
     } else {
       console.error("Socket ID is undefined");
     }
@@ -93,6 +96,11 @@ export default function Conference() {
         playsInline
         style={{ width: "45%", margin: "2.5%" }}
       />
+      <select className={styles.cameras}>
+        {camerOptions.map(({ deviceId, label }) => {
+          return <option key={deviceId}>{label}</option>;
+        })}
+      </select>
     </div>
   );
 }

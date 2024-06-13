@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./style.module.scss";
 
-export default function CreateRoom() {
+export default function LobbyPage() {
   const [room, setRoom] = useState<string>("");
   const navigate = useNavigate();
 
