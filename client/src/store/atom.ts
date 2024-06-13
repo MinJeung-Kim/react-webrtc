@@ -1,4 +1,7 @@
 import { atom } from "jotai";
 
 export const roomNameAtom = atom("");
-export const camerOptionAtom = atom<MediaDeviceInfo[]>([]);
+export const cameraOptionAtom = atom<MediaDeviceInfo[]>([]);
+export const isMutedAtom = atom(false);
+export const cameraOffAtom = atom(false);
+export const myStreamAtom = atom<MediaStream | null>(null);

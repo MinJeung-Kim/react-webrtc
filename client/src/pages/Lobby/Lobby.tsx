@@ -14,16 +14,23 @@ export default function LobbyPage() {
 
   return (
     <div className={styles.create_room}>
-      <input
-        className={styles.room_name}
-        type="text"
-        placeholder="Enter room ID"
-        value={room}
-        onChange={(e) => setRoom(e.target.value)}
-      />
-      <button onClick={handleCreateRoom} disabled={!room}>
-        Create Room
-      </button>
+      <video src=""></video>
+      <article className={styles.create}>
+        <input
+          className={styles.room_name}
+          type="text"
+          placeholder="Enter room ID"
+          value={room}
+          onChange={(e) => setRoom(e.target.value)}
+        />
+        <button
+          className={styles.room_button}
+          onClick={handleCreateRoom}
+          disabled={!room}
+        >
+          JOIN
+        </button>
+      </article>
     </div>
   );
 }

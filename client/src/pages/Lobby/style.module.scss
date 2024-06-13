@@ -1,6 +1,28 @@
 .create_room {
+  width: calc(100% + 48px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.room_name {
-}
-.room_button {
+
+.create {
+  display: flex;
+  align-items: center;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  padding: 0 14px;
+
+  .room_name {
+    background: transparent;
+    padding: 18.5px 14px;
+  }
+  .room_button {
+    color: #fff;
+    padding: 6px 16px;
+    font-size: 0.875rem;
+    background: rgb(17, 120, 248);
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+  }
 }
