@@ -1,0 +1,9 @@
+.icon_wrap {
+  display: flex;
+  align-items: center;
+  > svg {
+    height: 32px;
+    width: 32px;
+    color: rgb(255, 255, 255);
+  }
+}

@@ -1,5 +1,5 @@
-import { IoCallSharp } from "react-icons/io5";
+import { MdCallEnd } from "react-icons/md";
 
 export default function CallIcon() {
-  return <IoCallSharp />;
+  return <MdCallEnd />;
 }

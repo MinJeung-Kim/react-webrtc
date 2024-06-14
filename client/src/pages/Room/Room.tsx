@@ -8,9 +8,10 @@ import MicOffIcon from "@src/components/ui/icons/MicOffIcon";
 import CameraOnIcon from "@src/components/ui/icons/CameraOnIcon";
 import CameraOffIcon from "@src/components/ui/icons/CameraOffIcon";
 import VideoPlayer from "@src/components/VideoPlayer/VideoPlayer";
+import CallButton from "@src/components/CallButton/CallButton";
+import OnAndOffButton from "@src/components/OnAndOffButton/OnAndOffButton";
 import { cameraOffAtom, isMutedAtom, myStreamAtom } from "@src/store/atom";
 import styles from "./style.module.scss";
-import CallButton from "@src/components/CallButton/CallButton";
 
 interface SignalData {
   caller: string;
@@ -114,7 +115,17 @@ export default function RoomPage() {
       <VideoPlayer videoRef={remoteVideoRef} />
       <article className={styles.button_box}>
         <CallButton />
-        <button className={styles.button} onClick={handleMuteClick}>
+        <OnAndOffButton
+          icon={cameraOff ? <CameraOffIcon /> : <CameraOnIcon />}
+          options={cameraOptions}
+          onClick={handleCameraClick}
+        />
+        <OnAndOffButton
+          icon={isMuted ? <MicOffIcon /> : <MicOnIcon />}
+          options={[]}
+          onClick={handleMuteClick}
+        />
+        {/* <button className={styles.button} onClick={handleMuteClick}>
           <i className={styles.button_icon}>
             {isMuted ? <MicOffIcon /> : <MicOnIcon />}
           </i>
@@ -123,7 +134,7 @@ export default function RoomPage() {
           <i className={styles.button_icon}>
             {cameraOff ? <CameraOffIcon /> : <CameraOnIcon />}
           </i>
-        </button>
+        </button> */}
       </article>
 
       <select

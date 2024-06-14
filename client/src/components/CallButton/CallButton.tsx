@@ -9,6 +9,7 @@ import {
 import CallIcon from "../ui/icons/CallIcon";
 import LeaveIcon from "../ui/icons/LeaveIcon";
 import MeetingEndIcon from "../ui/icons/MettingEndIcon";
+import styles from "./style.module.scss";
 
 const options = [
   { name: "Leave", desc: "Only you will leave the call.", icon: <LeaveIcon /> },
@@ -47,8 +48,23 @@ export default function CallButton() {
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleClick}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: "8px",
+          background: "rgb(211, 47, 47)",
+          border: "2px solid rgb(211, 47, 47)",
+          opacity: 1,
+          color: "#fff",
+          "&:hover": {
+            background: "rgb(211, 47, 47)",
+          },
+        }}
       >
-        <CallIcon />
+        <i className={styles.call_icon}>
+          <CallIcon />
+        </i>
       </IconButton>
       <Menu
         id="long-menu"
