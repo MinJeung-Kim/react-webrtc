@@ -12,6 +12,7 @@ import CallButton from "@src/components/CallButton/CallButton";
 import OnAndOffButton from "@src/components/OnAndOffButton/OnAndOffButton";
 import { cameraOffAtom, isMutedAtom, myStreamAtom } from "@src/store/atom";
 import styles from "./style.module.scss";
+import EtcMenus from "@src/components/EtcMenus/EtcMenus";
 
 interface SignalData {
   caller: string;
@@ -124,6 +125,7 @@ export default function RoomPage() {
           options={audioOptions}
           onClick={handleMuteClick}
         />
+        <EtcMenus />
       </article>
     </div>
   );

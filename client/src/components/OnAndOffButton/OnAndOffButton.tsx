@@ -6,9 +6,9 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import CheckmarkIcon from "../ui/icons/CheckmarkIcon";
 import ArrowDownIcon from "../ui/icons/ArrowDownIcon";
 import styles from "./style.module.scss";
-import CheckmarkIcon from "../ui/icons/CheckmarkIcon";
 
 type Props = {
   icon: JSX.Element;
