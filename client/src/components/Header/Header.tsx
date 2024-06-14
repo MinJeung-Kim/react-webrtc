@@ -12,13 +12,6 @@ export const Header = memo(({ username, onLogout }: Props) => {
         <h1 className={styles.logo_name}>WebRTC</h1>
         {username && <span className={styles.logo_user}>@{username}</span>}
       </div>
-      {username && (
-        <nav className={styles.menu}>
-          <button className={styles.menu_item} onClick={onLogout}>
-            Logout
-          </button>
-        </nav>
-      )}
     </header>
   );
 });

@@ -107,8 +107,11 @@ export default function RoomPage() {
 
   return (
     <div className={styles.room}>
-      <VideoPlayer videoRef={localVideoRef} />
-      <VideoPlayer videoRef={remoteVideoRef} />
+      <div className={styles.video_wrap}>
+        <VideoPlayer videoRef={localVideoRef} />
+        <VideoPlayer videoRef={remoteVideoRef} />
+      </div>
+
       <article className={styles.button_box}>
         <CallButton />
         <OnAndOffButton
