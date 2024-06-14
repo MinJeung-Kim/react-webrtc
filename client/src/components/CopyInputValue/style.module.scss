@@ -1,0 +1,32 @@
+.url_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgb(255, 255, 255);
+  padding: 11px 20px;
+  border-radius: 4px;
+  background: rgba(28, 31, 46, 0.5);
+
+  .url_input {
+    width: 100%;
+    color: #fff;
+    font-size: 1rem;
+    background: transparent;
+  }
+
+  .copy_icon {
+    cursor: pointer;
+  }
+
+  .check_icon {
+    color: #0d941f;
+    border-radius: 50%;
+    background: #ffffff38;
+    padding: 0.2rem;
+
+    & svg {
+      width: 1.2rem;
+      stroke-width: 2rem;
+    }
+  }
+}

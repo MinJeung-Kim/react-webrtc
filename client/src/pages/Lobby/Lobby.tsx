@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWebRTC } from "@src/hooks/useWebRTC ";
-import CopyIcon from "@src/components/ui/icons/CopyIcon";
 import KeyboardIcon from "@src/components/ui/icons/KeyboardIcon";
 import VideoPlayer from "@src/components/VideoPlayer/VideoPlayer";
+import CopyInputValue from "@src/components/CopyInputValue/CopyInputValue";
 import styles from "./style.module.scss";
 
 export default function LobbyPage() {
@@ -28,15 +28,7 @@ export default function LobbyPage() {
         <article className={styles.join_wrap}>
           <div className={styles.url_copy}>
             <h1 className={styles.url_title}>Prebuilt Demo</h1>
-            <div className={styles.url_wrap}>
-              <input
-                className={styles.url_input}
-                type="text"
-                readOnly
-                value="https://www.videosdk.live/prebuilt/demo"
-              />
-              <CopyIcon />
-            </div>
+            <CopyInputValue />
           </div>
           <div className={styles.join_box}>
             <KeyboardIcon />
