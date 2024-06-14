@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAtom, useAtomValue } from "jotai";
 import { useSocket } from "@src/hooks/useSocket";
@@ -30,7 +30,6 @@ interface IceCandidateData {
 
 export default function RoomPage() {
   const { roomId } = useParams<{ roomId: string }>();
-  const [selectedCamera, setSelectedCamera] = useState("");
   const [isMuted, setIsMuted] = useAtom(isMutedAtom);
   const [cameraOff, setCameraOff] = useAtom(cameraOffAtom);
   const myStream = useAtomValue(myStreamAtom);
@@ -92,10 +91,6 @@ export default function RoomPage() {
     }
   };
 
-  const handleCamera = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCamera(e.target.value);
-  };
-
   const handleMuteClick = () => {
     myStream
       ?.getAudioTracks()
@@ -126,27 +121,7 @@ export default function RoomPage() {
           options={audioOptions}
           onClick={handleMuteClick}
         />
-        {/* <button className={styles.button} onClick={handleMuteClick}>
-          <i className={styles.button_icon}>
-            {isMuted ? <MicOffIcon /> : <MicOnIcon />}
-          </i>
-        </button>
-        <button className={styles.button} onClick={handleCameraClick}>
-          <i className={styles.button_icon}>
-            {cameraOff ? <CameraOffIcon /> : <CameraOnIcon />}
-          </i>
-        </button> */}
       </article>
-
-      {/* <select
-        className={styles.cameras}
-        value={selectedCamera}
-        onChange={handleCamera}
-      >
-        {cameraOptions.map(({ deviceId, label }) => {
-          return <option key={deviceId}>{label}</option>;
-        })}
-      </select> */}
     </div>
   );
 }

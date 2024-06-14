@@ -1,10 +1,10 @@
+import { useRef } from "react";
+import { useAtom } from "jotai";
 import {
   audioOptionAtom,
   cameraOptionAtom,
   myStreamAtom,
 } from "@src/store/atom";
-import { useAtom } from "jotai";
-import { useRef } from "react";
 
 export const useWebRTC = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null); // 로컬 비디오 요소에 대한 참조

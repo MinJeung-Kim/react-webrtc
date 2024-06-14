@@ -31,9 +31,7 @@ export default function CopyInputValue() {
         value="https://www.videosdk.live/prebuilt/demo"
       />
       {isCopy ? (
-        <i className={styles.check_icon}>
-          <CheckmarkIcon />
-        </i>
+        <CheckmarkIcon />
       ) : (
         <i className={styles.copy_icon} onClick={handleCopyToClipboard}>
           <CopyIcon />

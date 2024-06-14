@@ -1,3 +1,13 @@
+.button_wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 200ms linear 0s;
+  opacity: 1;
+}
 .icon_wrap {
   display: flex;
   align-items: center;
@@ -6,4 +16,7 @@
     width: 32px;
     color: rgb(255, 255, 255);
   }
+}
+
+.check_icon {
 }
