@@ -10,6 +10,7 @@ import CameraOffIcon from "@src/components/ui/icons/CameraOffIcon";
 import VideoPlayer from "@src/components/VideoPlayer/VideoPlayer";
 import { cameraOffAtom, isMutedAtom, myStreamAtom } from "@src/store/atom";
 import styles from "./style.module.scss";
+import CallButton from "@src/components/CallButton/CallButton";
 
 interface SignalData {
   caller: string;
@@ -103,26 +104,16 @@ export default function RoomPage() {
   const handleCameraClick = () => {
     myStream
       ?.getVideoTracks()
-      .forEach((track) => (track.enabled = !track.enabled)); // 비디오 트랙을 켜기/끄기
+      .forEach((track) => (track.enabled = !track.enabled));
     setCameraOff(!cameraOff);
   };
 
   return (
-    <div>
-      {/* <video
-        className={styles.local_video}
-        ref={localVideoRef}
-        autoPlay
-        playsInline
-      /> */}
+    <div className={styles.room}>
       <VideoPlayer videoRef={localVideoRef} />
-      <video
-        ref={remoteVideoRef}
-        autoPlay
-        playsInline
-        style={{ width: "45%", margin: "2.5%" }}
-      />
+      <VideoPlayer videoRef={remoteVideoRef} />
       <article className={styles.button_box}>
+        <CallButton />
         <button className={styles.button} onClick={handleMuteClick}>
           <i className={styles.button_icon}>
             {isMuted ? <MicOffIcon /> : <MicOnIcon />}
