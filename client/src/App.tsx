@@ -3,11 +3,11 @@ import { Provider as JotaiProvider } from "jotai";
 import RoomPage from "./pages/Room/Room";
 import LobbyPage from "./pages/Lobby/Lobby";
 import { Header } from "./components/Header/Header";
-import "./App.css";
+import styles from "./App.module.scss";
 
 function App() {
   return (
-    <div className="App">
+    <div className={styles.app}>
       <BrowserRouter>
         <JotaiProvider>
           <RoutesWithNavigation />

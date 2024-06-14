@@ -96,6 +96,7 @@ select {
   vertical-align: baseline;
   cursor: default;
 }
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -148,7 +149,7 @@ button {
 
 input {
   border: 0 solid black;
-  text-indent: 1rem;
+  text-indent: 0;
 }
 
 input:focus {

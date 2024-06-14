@@ -7,6 +7,7 @@ import MicOnIcon from "@src/components/ui/icons/MicOnIcon";
 import MicOffIcon from "@src/components/ui/icons/MicOffIcon";
 import CameraOnIcon from "@src/components/ui/icons/CameraOnIcon";
 import CameraOffIcon from "@src/components/ui/icons/CameraOffIcon";
+import VideoPlayer from "@src/components/VideoPlayer/VideoPlayer";
 import { cameraOffAtom, isMutedAtom, myStreamAtom } from "@src/store/atom";
 import styles from "./style.module.scss";
 
@@ -108,12 +109,13 @@ export default function RoomPage() {
 
   return (
     <div>
-      <video
+      {/* <video
         className={styles.local_video}
         ref={localVideoRef}
         autoPlay
         playsInline
-      />
+      /> */}
+      <VideoPlayer videoRef={localVideoRef} />
       <video
         ref={remoteVideoRef}
         autoPlay
