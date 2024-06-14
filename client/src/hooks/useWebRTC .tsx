@@ -1,4 +1,8 @@
-import { cameraOptionAtom, myStreamAtom } from "@src/store/atom";
+import {
+  audioOptionAtom,
+  cameraOptionAtom,
+  myStreamAtom,
+} from "@src/store/atom";
 import { useAtom } from "jotai";
 import { useRef } from "react";
 
@@ -7,6 +11,7 @@ export const useWebRTC = () => {
   const remoteVideoRef = useRef<HTMLVideoElement>(null); // 원격 비디오 요소에 대한 참조
   const peerConnection = useRef<RTCPeerConnection | null>(null); // 피어 연결 객체에 대한 참조
   const [cameraOptions, setCameraOptions] = useAtom(cameraOptionAtom);
+  const [audioOptions, setAudioOptions] = useAtom(audioOptionAtom);
   const [myStream, setMyStream] = useAtom(myStreamAtom);
 
   // 피어 연결을 초기화하는 함수
@@ -88,10 +93,13 @@ export const useWebRTC = () => {
   const getCameras = async () => {
     // user 장치 리스트 가져오기
     const devices = await navigator.mediaDevices.enumerateDevices();
+
     // 여러 내장 장치 중 카메라만 가져오기
     const cameras = devices.filter((device) => device.kind === "videoinput");
+    const audios = devices.filter((device) => device.kind === "audioinput");
 
     setCameraOptions(cameras);
+    setAudioOptions(audios);
   };
 
   const getMedia = async (deviceId?: string) => {
@@ -130,6 +138,7 @@ export const useWebRTC = () => {
     localVideoRef,
     remoteVideoRef,
     cameraOptions,
+    audioOptions,
     initializePeerConnection,
     createOffer,
     createAnswer,

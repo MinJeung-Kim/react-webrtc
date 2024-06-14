@@ -38,6 +38,7 @@ export default function RoomPage() {
     localVideoRef,
     remoteVideoRef,
     cameraOptions,
+    audioOptions,
     initializePeerConnection,
     createOffer,
     createAnswer,
@@ -122,7 +123,7 @@ export default function RoomPage() {
         />
         <OnAndOffButton
           icon={isMuted ? <MicOffIcon /> : <MicOnIcon />}
-          options={[]}
+          options={audioOptions}
           onClick={handleMuteClick}
         />
         {/* <button className={styles.button} onClick={handleMuteClick}>
@@ -137,7 +138,7 @@ export default function RoomPage() {
         </button> */}
       </article>
 
-      <select
+      {/* <select
         className={styles.cameras}
         value={selectedCamera}
         onChange={handleCamera}
@@ -145,7 +146,7 @@ export default function RoomPage() {
         {cameraOptions.map(({ deviceId, label }) => {
           return <option key={deviceId}>{label}</option>;
         })}
-      </select>
+      </select> */}
     </div>
   );
 }
