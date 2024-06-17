@@ -9,8 +9,8 @@ const useStream = () => {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices(); // 모든 미디어 장치 가져오기
       const cameras = devices.filter((device) => device.kind === "videoinput"); // 비디오 입력 장치 필터링
-      // const currentCamera = stream?.getVideoTracks(); // 현재 사용 중인 비디오 트랙 가져오기
       setCameraOptions(cameras);
+
       const audios = devices.filter((device) => device.kind === "audioinput");
       setAudioOptions(audios);
     } catch (error) {
@@ -50,7 +50,12 @@ const useStream = () => {
     }
   }, []);
 
-  return { stream, cameraOptions, audioOptions, getMedia };
+  return {
+    stream,
+    cameraOptions,
+    audioOptions,
+    getMedia,
+  };
 };
 
 export default useStream;

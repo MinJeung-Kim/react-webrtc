@@ -6,6 +6,8 @@ import usePeerConnections from "./PeerConnectionHandler";
 import VideoPlayer from "../VideoPlayer";
 import Chat from "../Chat";
 import Modal from "../Modal";
+import Button from "../ui/Button";
+import Select from "../ui/Select";
 
 interface CallProps {
   socket: Socket;
@@ -24,6 +26,8 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
   const [cameraOff, setCameraOff] = useState<boolean>(false);
   const [modalText, setModalText] = useState<string>("");
   const [peopleInRoom, setPeopleInRoom] = useState<number>(1);
+  const [selectedCamera, setSelectedCamera] = useState<string>("");
+  const [selectedAudio, setSelectedAudio] = useState<string>("");
 
   useEffect(() => {
     getMedia();
@@ -52,6 +56,14 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
     }
+  };
+
+  const handleAudioChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedAudio(e.target.value);
+  };
+
+  const handleCameraChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCamera(e.target.value);
   };
 
   const socketEvents = useMemo(
@@ -156,25 +168,22 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
           </div>
         );
       })}
-      <button onClick={handleMuteClick}>{muted ? "Unmute" : "Mute"}</button>
-      <select>
-        {audioOptions.map(({ label, deviceId }) => (
-          <option key={deviceId} value={label}>
-            {label}
-          </option>
-        ))}
-      </select>
-      <button onClick={handleCameraClick}>
-        {cameraOff ? "Turn Camera On" : "Turn Camera Off"}
-      </button>
-      <select>
-        {cameraOptions.map(({ label, deviceId }) => (
-          <option key={deviceId} value={label}>
-            {label}
-          </option>
-        ))}
-      </select>
-      <button onClick={handleLeave}>Leave</button>
+      <Button onClick={handleMuteClick} label={muted ? "Unmute" : "Mute"} />
+      <Select
+        options={audioOptions}
+        onChange={handleAudioChange}
+        selected={selectedAudio}
+      />
+      <Button
+        onClick={handleCameraClick}
+        label={cameraOff ? "Turn Camera On" : "Turn Camera Off"}
+      />
+      <Select
+        options={cameraOptions}
+        onChange={handleCameraChange}
+        selected={selectedCamera}
+      />
+      <Button onClick={handleLeave} label="Leave" />
       <Chat socket={socket} roomName={roomName} nickname={nickname} />
       <Modal text={modalText} setText={setModalText} />
     </div>
