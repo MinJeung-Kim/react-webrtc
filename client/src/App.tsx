@@ -1,13 +1,33 @@
-import WebRTCComponent from "./components/WebRTCComponent";
+import React, { useState } from "react";
+import { io } from "socket.io-client";
+import Call from "./components/Call";
+import Welcome from "./pages/Welcome";
 
-function App() {
+const socket = io("http://localhost:8080");
+
+const App: React.FC = () => {
+  const [roomName, setRoomName] = useState<string>("");
+  const [nickname, setNickname] = useState<string>("");
+  const [inCall, setInCall] = useState<boolean>(false);
+
+  const joinRoom = (room: string, nick: string) => {
+    setRoomName(room);
+    setNickname(nick);
+    setInCall(true);
+    console.log("joinRoom : ", room);
+
+    socket.emit("join_room", room, nick);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <WebRTCComponent />
-      </header>
+    <div>
+      {inCall ? (
+        <Call socket={socket} roomName={roomName} nickname={nickname} />
+      ) : (
+        <Welcome joinRoom={joinRoom} />
+      )}
     </div>
   );
-}
+};
 
 export default App;

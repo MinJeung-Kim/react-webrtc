@@ -1,47 +1,110 @@
 import express from "express";
 import http from "http";
 import cors from "cors";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 
 const app = express();
-app.use(cors);
+app.use(cors());
 const port = 8080;
 const server = http.createServer(app);
-const io = new Server(server, {
+const wsServer = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
 });
 
-io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
+interface User {
+  socketId: string;
+  nickname: string;
+}
 
-  socket.on("join", (room) => {
-    socket.join(room);
-    console.log(`User ${socket.id} joined room: ${room}`);
+interface Room {
+  roomName: string;
+  currentNum: number;
+  users: User[];
+}
+
+let roomObjArr: Room[] = [];
+const MAXIMUM = 5;
+
+const findRoom = (roomName: string): Room | null => {
+  return roomObjArr.find((room) => room.roomName === roomName) || null;
+};
+
+const removeUserFromRoom = (socketId: string, room: Room): void => {
+  room.users = room.users.filter((user) => user.socketId !== socketId);
+  room.currentNum--;
+};
+
+wsServer.on("connection", (socket: Socket) => {
+  console.log({ socket }); // 이 부분에서 콘솔에 출력
+
+  let myRoomName: string | null = null;
+  let myNickname: string | null = null;
+
+  socket.on("join_room", (roomName: string, nickname: string) => {
+    myRoomName = roomName;
+    myNickname = nickname;
+
+    let targetRoomObj = findRoom(roomName);
+
+    if (targetRoomObj) {
+      if (targetRoomObj.currentNum >= MAXIMUM) {
+        socket.emit("reject_join");
+        return;
+      }
+    } else {
+      targetRoomObj = { roomName, currentNum: 0, users: [] };
+      roomObjArr.push(targetRoomObj);
+    }
+
+    targetRoomObj.users.push({ socketId: socket.id, nickname });
+    targetRoomObj.currentNum++;
+
+    socket.join(roomName);
+    socket.emit("accept_join", targetRoomObj.users);
+    console.log(`${nickname} joined room ${roomName}`);
   });
 
-  socket.on("offer", (data) => {
-    console.log(`Offer from ${data.caller} to room ${data.room}`);
-    socket.to(data.room).emit("offer", data);
+  socket.on(
+    "offer",
+    (offer: any, remoteSocketId: string, localNickname: string) => {
+      socket.to(remoteSocketId).emit("offer", offer, socket.id, localNickname);
+    }
+  );
+
+  socket.on("answer", (answer: any, remoteSocketId: string) => {
+    socket.to(remoteSocketId).emit("answer", answer, socket.id);
   });
 
-  socket.on("answer", (data) => {
-    console.log(`Answer from ${data.target} to room ${data.room}`);
-    socket.to(data.room).emit("answer", data);
+  socket.on("ice", (ice: any, remoteSocketId: string) => {
+    socket.to(remoteSocketId).emit("ice", ice, socket.id);
   });
 
-  socket.on("ice-candidate", (data) => {
-    console.log(`ICE Candidate from ${data.target} to room ${data.room}`);
-    socket.to(data.room).emit("ice-candidate", data);
+  socket.on("chat", (message: string, roomName: string) => {
+    socket.to(roomName).emit("chat", message);
   });
 
   socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
+    if (myRoomName && myNickname) {
+      socket.to(myRoomName).emit("leave_room", socket.id, myNickname);
+
+      let targetRoomObj = findRoom(myRoomName);
+      if (targetRoomObj) {
+        removeUserFromRoom(socket.id, targetRoomObj);
+
+        if (targetRoomObj.currentNum === 0) {
+          roomObjArr = roomObjArr.filter(
+            (room) => room.roomName !== myRoomName
+          );
+        }
+      }
+      console.log(`${myNickname} left room ${myRoomName}`);
+    }
   });
 });
 
 server.listen(port, () => {
-  console.log("server started on port 8080");
+  console.log(`server started on port ${port}`);
 });
