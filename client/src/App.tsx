@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { io } from "socket.io-client";
-import Call from "./components/Call";
+import Call from "./components/Call/Call";
 import Welcome from "./pages/Welcome";
 
 const socket = io("http://localhost:8080");

@@ -1,16 +1,12 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Socket } from "socket.io-client";
-import Chat from "./Chat";
-import VideoPlayer from "./VideoPlayer";
-import Modal from "./Modal";
 import useStream from "@src/hooks/useStream";
 import useSocket from "@src/hooks/useSocket";
+import usePeerConnections from "./PeerConnectionHandler";
+import useChatMessages from "./ChatHandler";
+import VideoPlayer from "../VideoPlayer";
+import Chat from "../Chat";
+import Modal from "../Modal";
 
 interface CallProps {
   socket: Socket;
@@ -18,70 +14,22 @@ interface CallProps {
   nickname: string;
 }
 
-interface PeerConnectionObj {
-  connection: RTCPeerConnection;
-  socketId: string;
-  nickname: string;
-}
-
 const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
   const { stream, getMedia } = useStream();
+  const remoteVideoRefs = useRef<
+    Map<string, React.RefObject<HTMLVideoElement>>
+  >(new Map());
+  const { peerConnections, createPeerConnection, setPeerConnections } =
+    usePeerConnections(socket, stream, remoteVideoRefs);
+  const { chatMessages, addChatMessage } = useChatMessages();
   const [muted, setMuted] = useState<boolean>(true);
   const [cameraOff, setCameraOff] = useState<boolean>(false);
   const [modalText, setModalText] = useState<string>("");
   const [peopleInRoom, setPeopleInRoom] = useState<number>(1);
-  const [peerConnections, setPeerConnections] = useState<PeerConnectionObj[]>(
-    []
-  );
-  const remoteVideoRefs = useRef<
-    Map<string, React.RefObject<HTMLVideoElement>>
-  >(new Map());
 
   useEffect(() => {
     getMedia();
   }, [getMedia]);
-
-  const createPeerConnection = useCallback(
-    (remoteSocketId: string, remoteNickname: string): RTCPeerConnection => {
-      const pc = new RTCPeerConnection({
-        iceServers: [
-          {
-            urls: [
-              "stun:stun.l.google.com:19302",
-              "stun:stun1.l.google.com:19302",
-              "stun:stun2.l.google.com:19302",
-              "stun:stun3.l.google.com:19302",
-              "stun:stun4.l.google.com:19302",
-            ],
-          },
-        ],
-      });
-
-      pc.onicecandidate = (event) => {
-        if (event.candidate) {
-          socket.emit("ice", event.candidate, remoteSocketId);
-        }
-      };
-
-      pc.ontrack = (event) => {
-        const [remoteStream] = event.streams;
-        const remoteVideoRef = remoteVideoRefs.current.get(remoteSocketId);
-        if (remoteVideoRef?.current) {
-          remoteVideoRef.current.srcObject = remoteStream;
-        }
-      };
-
-      stream?.getTracks().forEach((track) => pc.addTrack(track, stream));
-
-      setPeerConnections((prev) => [
-        ...prev,
-        { connection: pc, socketId: remoteSocketId, nickname: remoteNickname },
-      ]);
-
-      return pc;
-    },
-    [socket, stream]
-  );
 
   const handleMuteClick = () => {
     if (stream) {
@@ -177,7 +125,7 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
       {
         event: "chat",
         handler: (message: string) => {
-          // Handle incoming chat message
+          addChatMessage(message);
         },
       },
       {
@@ -188,9 +136,8 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
             prev.filter((p) => p.socketId !== leavedSocketId)
           );
           remoteVideoRefs.current.delete(leavedSocketId);
-          // Handle user leaving the room
           const chatMessage = `${nickname} has left the room.`;
-          console.log(chatMessage);
+          addChatMessage(chatMessage);
         },
       },
     ],
@@ -226,6 +173,14 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
       <button onClick={handleLeave}>Leave</button>
       <Chat socket={socket} roomName={roomName} nickname={nickname} />
       <Modal text={modalText} setText={setModalText} />
+      <div>
+        <h3>Chat</h3>
+        <ul>
+          {chatMessages.map((msg, index) => (
+            <li key={index}>{msg}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
