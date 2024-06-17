@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import {
   audioOptionAtom,
   cameraOptionAtom,
@@ -12,7 +12,7 @@ export const useWebRTC = () => {
   const peerConnection = useRef<RTCPeerConnection | null>(null); // 피어 연결 객체에 대한 참조
   const [cameraOptions, setCameraOptions] = useAtom(cameraOptionAtom);
   const [audioOptions, setAudioOptions] = useAtom(audioOptionAtom);
-  const [myStream, setMyStream] = useAtom(myStreamAtom);
+  const setMyStream = useSetAtom(myStreamAtom);
 
   // 피어 연결을 초기화하는 함수
   const initializePeerConnection = (

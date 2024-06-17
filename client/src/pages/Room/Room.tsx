@@ -7,12 +7,12 @@ import MicOnIcon from "@src/components/ui/icons/MicOnIcon";
 import MicOffIcon from "@src/components/ui/icons/MicOffIcon";
 import CameraOnIcon from "@src/components/ui/icons/CameraOnIcon";
 import CameraOffIcon from "@src/components/ui/icons/CameraOffIcon";
+import EtcMenus from "@src/components/EtcMenus/EtcMenus";
 import VideoPlayer from "@src/components/VideoPlayer/VideoPlayer";
 import CallButton from "@src/components/CallButton/CallButton";
 import OnAndOffButton from "@src/components/OnAndOffButton/OnAndOffButton";
 import { cameraOffAtom, isMutedAtom, myStreamAtom } from "@src/store/atom";
 import styles from "./style.module.scss";
-import EtcMenus from "@src/components/EtcMenus/EtcMenus";
 
 interface SignalData {
   caller: string;
