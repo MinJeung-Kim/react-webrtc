@@ -14,7 +14,6 @@ interface CallProps {
   roomName: string;
   nickname: string;
 }
-
 const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
   const { stream, cameraOptions, audioOptions, getMedia } = useStream();
   const remoteVideoRefs = useRef<
