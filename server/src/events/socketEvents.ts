@@ -7,8 +7,6 @@ import {
 
 export const handleSocketConnection = (wsServer: Server) => {
   wsServer.on("connection", (socket: Socket) => {
-    console.log({ socket });
-
     let myRoomName: string | null = null;
     let myNickname: string | null = null;
 

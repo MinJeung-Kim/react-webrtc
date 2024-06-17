@@ -14,7 +14,7 @@ interface CallProps {
 }
 
 const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
-  const { stream, getMedia } = useStream();
+  const { stream, cameraOptions, audioOptions, getMedia } = useStream();
   const remoteVideoRefs = useRef<
     Map<string, React.RefObject<HTMLVideoElement>>
   >(new Map());
@@ -157,9 +157,23 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
         );
       })}
       <button onClick={handleMuteClick}>{muted ? "Unmute" : "Mute"}</button>
+      <select>
+        {audioOptions.map(({ label, deviceId }) => (
+          <option key={deviceId} value={label}>
+            {label}
+          </option>
+        ))}
+      </select>
       <button onClick={handleCameraClick}>
         {cameraOff ? "Turn Camera On" : "Turn Camera Off"}
       </button>
+      <select>
+        {cameraOptions.map(({ label, deviceId }) => (
+          <option key={deviceId} value={label}>
+            {label}
+          </option>
+        ))}
+      </select>
       <button onClick={handleLeave}>Leave</button>
       <Chat socket={socket} roomName={roomName} nickname={nickname} />
       <Modal text={modalText} setText={setModalText} />

@@ -14,7 +14,6 @@ const App: React.FC = () => {
     setRoomName(room);
     setNickname(nick);
     setInCall(true);
-    console.log("joinRoom : ", room);
 
     socket.emit("join_room", room, nick);
   };
