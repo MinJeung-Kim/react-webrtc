@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Socket } from "socket.io-client";
 import useStream from "@src/hooks/useStream";
 import useSocket from "@src/hooks/useSocket";
-import usePeerConnections from "./PeerConnectionHandler";
-import VideoPlayer from "../VideoPlayer";
-import Chat from "../Chat";
-import Modal from "../Modal";
-import Button from "../ui/Button";
-import Select from "../ui/Select";
+import VideoPlayer from "../components/VideoPlayer";
+import Chat from "../components/Chat";
+import Modal from "../components/Modal";
+import Button from "../components/ui/Button";
+import Select from "../components/ui/Select";
+import usePeerConnections from "@src/hooks/PeerConnectionHandler";
+import RemoteVideo from "../components/RemoteVideo";
+import { Socket } from "socket.io-client";
 
 interface CallProps {
   socket: Socket;
@@ -21,6 +22,7 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
   >(new Map());
   const { peerConnections, createPeerConnection, setPeerConnections } =
     usePeerConnections(socket, stream, remoteVideoRefs);
+
   const [muted, setMuted] = useState<boolean>(true);
   const [cameraOff, setCameraOff] = useState<boolean>(false);
   const [modalText, setModalText] = useState<string>("");
@@ -69,16 +71,13 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
     () => [
       {
         event: "reject_join",
-        handler: () => {
-          setModalText("Sorry, The room is already full.");
-        },
+        handler: () => setModalText("Sorry, The room is already full."),
       },
       {
         event: "accept_join",
         handler: async (userObjArr: any[]) => {
           await getMedia();
           setPeopleInRoom(userObjArr.length);
-
           userObjArr.forEach(async (userObj) => {
             if (userObj.socketId !== socket.id) {
               const pc = createPeerConnection(
@@ -147,26 +146,35 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
 
   useSocket(socket, socketEvents);
 
+  const renderRemoteVideos = () => {
+    return peerConnections.map((peer) => {
+      console.log("renderRemoteVideos : ", peer);
+
+      if (!remoteVideoRefs.current.has(peer.socketId)) {
+        remoteVideoRefs.current.set(
+          peer.socketId,
+          React.createRef<HTMLVideoElement>()
+        );
+      }
+      // const remoteVideoRef = remoteVideoRefs.current.get(peer.socketId);
+      // const remoteVideoRef = useRef<HTMLVideoElement>(null);
+      return (
+        <RemoteVideo
+          key={peer.socketId}
+          nickname={peer.nickname}
+          // videoRef={remoteVideoRef!}
+          stream={peer.remoteStream}
+        />
+      );
+    });
+  };
+
   return (
     <div>
       <h2>Room: {roomName}</h2>
       <h3>People in room: {peopleInRoom}</h3>
-      <VideoPlayer stream={stream} />
-      {peerConnections.map((peer) => {
-        if (!remoteVideoRefs.current.has(peer.socketId)) {
-          remoteVideoRefs.current.set(
-            peer.socketId,
-            React.createRef<HTMLVideoElement>()
-          );
-        }
-        const remoteVideoRef = remoteVideoRefs.current.get(peer.socketId);
-        return (
-          <div key={peer.socketId}>
-            <h4>닉네임 : {peer.nickname}</h4>
-            <video ref={remoteVideoRef} autoPlay playsInline />
-          </div>
-        );
-      })}
+      <VideoPlayer stream={stream} nickname={nickname} />
+      {renderRemoteVideos()}
       <Button onClick={handleMuteClick} label={muted ? "Unmute" : "Mute"} />
       <Select
         options={audioOptions}
