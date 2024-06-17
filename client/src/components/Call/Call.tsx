@@ -3,7 +3,6 @@ import { Socket } from "socket.io-client";
 import useStream from "@src/hooks/useStream";
 import useSocket from "@src/hooks/useSocket";
 import usePeerConnections from "./PeerConnectionHandler";
-import useChatMessages from "./ChatHandler";
 import VideoPlayer from "../VideoPlayer";
 import Chat from "../Chat";
 import Modal from "../Modal";
@@ -21,7 +20,6 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
   >(new Map());
   const { peerConnections, createPeerConnection, setPeerConnections } =
     usePeerConnections(socket, stream, remoteVideoRefs);
-  const { chatMessages, addChatMessage } = useChatMessages();
   const [muted, setMuted] = useState<boolean>(true);
   const [cameraOff, setCameraOff] = useState<boolean>(false);
   const [modalText, setModalText] = useState<string>("");
@@ -123,12 +121,6 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
         },
       },
       {
-        event: "chat",
-        handler: (message: string) => {
-          addChatMessage(message);
-        },
-      },
-      {
         event: "leave_room",
         handler: (leavedSocketId: string, nickname: string) => {
           setPeopleInRoom((prev) => prev - 1);
@@ -136,8 +128,6 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
             prev.filter((p) => p.socketId !== leavedSocketId)
           );
           remoteVideoRefs.current.delete(leavedSocketId);
-          const chatMessage = `${nickname} has left the room.`;
-          addChatMessage(chatMessage);
         },
       },
     ],
@@ -161,7 +151,7 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
         const remoteVideoRef = remoteVideoRefs.current.get(peer.socketId);
         return (
           <div key={peer.socketId}>
-            <h4>{peer.nickname}</h4>
+            <h4>닉네임 : {peer.nickname}</h4>
             <video ref={remoteVideoRef} autoPlay playsInline />
           </div>
         );
@@ -173,14 +163,6 @@ const Call: React.FC<CallProps> = ({ socket, roomName, nickname }) => {
       <button onClick={handleLeave}>Leave</button>
       <Chat socket={socket} roomName={roomName} nickname={nickname} />
       <Modal text={modalText} setText={setModalText} />
-      <div>
-        <h3>Chat</h3>
-        <ul>
-          {chatMessages.map((msg, index) => (
-            <li key={index}>{msg}</li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 };
