@@ -18,6 +18,7 @@ import {
   nickNameAtom,
 } from "@src/store/atom";
 import styles from "./style.module.scss";
+import RoomHeader from "@src/components/RoomHeader/RoomHeader";
 
 interface SignalData {
   caller: string;
@@ -116,6 +117,7 @@ export default function RoomPage() {
 
   return (
     <div className={styles.room}>
+      <RoomHeader />
       <div className={styles.video_wrap}>
         <VideoPlayer videoRef={localVideoRef} nickName={nickName} />
         <VideoPlayer videoRef={remoteVideoRef} nickName={nickName} />
