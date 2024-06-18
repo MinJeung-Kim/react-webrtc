@@ -10,7 +10,7 @@ export default function VideoPlayer({ videoRef, nickName }: Props) {
 
   return (
     <div className={styles.video_wrap}>
-      <h1 className={styles.nick}>닉네임 : {nickName}</h1>
+      {nickName && <h1 className={styles.nick}>닉네임 : {nickName}</h1>}
       <video
         className={styles.local_video}
         ref={videoRef}
