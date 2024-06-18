@@ -17,7 +17,7 @@ export default function CopyInputValue() {
           setIsCopy(true);
           setTimeout(() => setIsCopy(false), 3000);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.error(err));
     }
   };
 

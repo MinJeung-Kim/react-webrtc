@@ -130,7 +130,7 @@ export const useWebRTC = () => {
       }
       return stream;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

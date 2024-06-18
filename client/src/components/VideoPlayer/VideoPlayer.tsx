@@ -6,8 +6,6 @@ type Props = {
 };
 
 export default function VideoPlayer({ videoRef, nickName }: Props) {
-  console.log("VideoPlayer : ", videoRef);
-
   return (
     <div className={styles.video_wrap}>
       {nickName && <h1 className={styles.nick}>닉네임 : {nickName}</h1>}

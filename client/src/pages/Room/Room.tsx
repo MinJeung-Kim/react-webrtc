@@ -113,7 +113,6 @@ export default function RoomPage() {
       .forEach((track) => (track.enabled = !track.enabled));
     setCameraOff(!cameraOff);
   };
-  console.log("peerConnection : ", peerConnection);
 
   return (
     <div className={styles.room}>

@@ -74,7 +74,6 @@ export const useSocket = (
 
   const appendToLog = (message: string) => {
     setLog((prevLog) => [...prevLog, message]); // 이전 로그에 새로운 메시지 추가
-    console.log({ message });
   };
 
   return {
