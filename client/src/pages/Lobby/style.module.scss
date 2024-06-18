@@ -49,16 +49,20 @@
   padding: 0 14px;
   color: #fff;
 
-  & svg {
-    width: 1.8rem;
-    height: 1.8rem;
-  }
+  .name {
+    display: flex;
+    align-items: center;
+    & svg {
+      width: 1.8rem;
+      height: 1.8rem;
+    }
 
-  .join_input {
-    width: 100%;
-    color: #fff;
-    padding: 18.5px 14px;
-    background: transparent;
+    .join_input {
+      width: 100%;
+      color: #fff;
+      padding: 18.5px 14px;
+      background: transparent;
+    }
   }
 
   .join_btn {

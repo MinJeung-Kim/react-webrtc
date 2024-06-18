@@ -19,9 +19,9 @@ const io = new socket_io_1.Server(server, {
 });
 io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
-    socket.on("join", (room) => {
+    socket.on("join", (room, nickName) => {
         socket.join(room);
-        console.log(`User ${socket.id} joined room: ${room}`);
+        console.log(`User ${socket.id} joined room: ${room} , nickName: ${nickName}`);
     });
     socket.on("offer", (data) => {
         console.log(`Offer from ${data.caller} to room ${data.room}`);

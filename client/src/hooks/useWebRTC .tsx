@@ -140,6 +140,7 @@ export const useWebRTC = () => {
     cameraOptions,
     audioOptions,
     initializePeerConnection,
+    peerConnection,
     createOffer,
     createAnswer,
     setRemoteDescription,

@@ -11,7 +11,12 @@ import EtcMenus from "@src/components/EtcMenus/EtcMenus";
 import VideoPlayer from "@src/components/VideoPlayer/VideoPlayer";
 import CallButton from "@src/components/CallButton/CallButton";
 import OnAndOffButton from "@src/components/OnAndOffButton/OnAndOffButton";
-import { cameraOffAtom, isMutedAtom, myStreamAtom } from "@src/store/atom";
+import {
+  cameraOffAtom,
+  isMutedAtom,
+  myStreamAtom,
+  nickNameAtom,
+} from "@src/store/atom";
 import styles from "./style.module.scss";
 
 interface SignalData {
@@ -34,12 +39,14 @@ export default function RoomPage() {
   const [isMuted, setIsMuted] = useAtom(isMutedAtom);
   const [cameraOff, setCameraOff] = useAtom(cameraOffAtom);
   const myStream = useAtomValue(myStreamAtom);
+  const nickName = useAtomValue(nickNameAtom);
   const {
     localVideoRef,
     remoteVideoRef,
     cameraOptions,
     audioOptions,
     initializePeerConnection,
+    peerConnection,
     createOffer,
     createAnswer,
     setRemoteDescription,
@@ -70,7 +77,7 @@ export default function RoomPage() {
 
   useEffect(() => {
     if (roomId) {
-      joinRoom(roomId);
+      joinRoom(roomId, nickName);
       startCall();
     }
   }, [roomId]);
@@ -105,12 +112,13 @@ export default function RoomPage() {
       .forEach((track) => (track.enabled = !track.enabled));
     setCameraOff(!cameraOff);
   };
+  console.log("peerConnection : ", peerConnection);
 
   return (
     <div className={styles.room}>
       <div className={styles.video_wrap}>
-        <VideoPlayer videoRef={localVideoRef} />
-        <VideoPlayer videoRef={remoteVideoRef} />
+        <VideoPlayer videoRef={localVideoRef} nickName={nickName} />
+        <VideoPlayer videoRef={remoteVideoRef} nickName={nickName} />
       </div>
 
       <article className={styles.button_box}>

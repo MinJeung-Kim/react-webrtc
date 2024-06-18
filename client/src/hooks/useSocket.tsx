@@ -42,10 +42,10 @@ export const useSocket = (
     };
   }, []);
 
-  const joinRoom = (room: string) => {
+  const joinRoom = (room: string, nickName: string) => {
     if (room) {
-      socket.emit("join", room); // 소켓을 통해 "join" 이벤트 전송
-      appendToLog(`Joined room: ${room}`); // 로그에 메시지 추가
+      socket.emit("join", room, nickName); // 소켓을 통해 "join" 이벤트 전송
+      appendToLog(`Joined room: ${room}, nick: ${nickName}`); // 로그에 메시지 추가
     }
   };
 

@@ -1,6 +1,7 @@
 import { atom } from "jotai";
 
 export const roomNameAtom = atom("");
+export const nickNameAtom = atom("");
 export const cameraOptionAtom = atom<MediaDeviceInfo[]>([]);
 export const audioOptionAtom = atom<MediaDeviceInfo[]>([]);
 export const isMutedAtom = atom(false);
