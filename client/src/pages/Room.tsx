@@ -1,12 +1,13 @@
 import { useAtomValue } from "jotai";
 import { Box } from "@mui/material";
 import { roomNameAtom } from "@src/store/VideoAtom";
+import Chat from "@src/components/Chat";
 import VideoPlay from "@src/components/VideoPlay";
 import VideoControl from "@src/components/VideoControl";
-import Chat from "@src/components/Chat";
 
-export default function Room() {
+export default function RoomPage() {
   const roomName = useAtomValue(roomNameAtom);
+
   return (
     <Box
       className="room"

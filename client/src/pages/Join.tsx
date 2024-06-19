@@ -7,7 +7,7 @@ type Props = {
   setIsCall: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function Join({ setIsCall }: Props) {
+export default function JoinPage({ setIsCall }: Props) {
   const [roomName, setRoomName] = useAtom(roomNameAtom);
   const [nickName, setNickName] = useAtom(nickNameAtom);
 
