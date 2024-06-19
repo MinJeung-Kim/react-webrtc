@@ -18,7 +18,7 @@ const io = new socket_io_1.Server(server, {
     },
 });
 io.on("connection", (socket) => {
-    socket.on("join", (room, nickName) => {
+    socket.on("join", (room) => {
         socket.join(room);
     });
     socket.on("offer", (data) => {

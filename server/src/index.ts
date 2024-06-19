@@ -15,7 +15,7 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("join", (room, nickName) => {
+  socket.on("join", (room) => {
     socket.join(room);
   });
 
