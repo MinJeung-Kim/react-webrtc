@@ -11,7 +11,7 @@ const VideoPlay = forwardRef<HTMLVideoElement, Props>(({ stream }, ref) => {
   const nickName = useAtomValue(nickNameAtom);
 
   useEffect(() => {
-    if (ref && typeof ref !== "function" && ref.current) {
+    if (ref && typeof ref !== "function" && ref.current && stream) {
       ref.current.srcObject = stream;
     }
   }, [stream, ref]);
