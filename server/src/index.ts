@@ -71,10 +71,13 @@ wsServer.on("connection", (socket: Socket) => {
       socketId: socket.id,
       nickname,
     }); // 방 객체에 사용자 추가
-    targetRoomObj && ++targetRoomObj.currentNum; // 현재 인원 수 증가
+    if (targetRoomObj) {
+      ++targetRoomObj.currentNum; // 현재 인원 수 증가
+      console.log("accept_join : ", targetRoomObj);
 
-    socket.join(roomName); // 클라이언트를 방에 참가시킴
-    socket.emit("accept_join", targetRoomObj?.users); // 참가 수락 이벤트 전송
+      socket.join(roomName); // 클라이언트를 방에 참가시킴
+      socket.emit("accept_join", targetRoomObj?.users); // 참가 수락 이벤트 전송
+    }
   });
 
   socket.on(

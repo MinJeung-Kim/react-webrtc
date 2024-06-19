@@ -2,12 +2,14 @@ import { ChangeEvent, MouseEvent } from "react";
 import { useAtom } from "jotai";
 import { Button, CardActions, CardContent, TextField } from "@mui/material";
 import { nickNameAtom, roomNameAtom } from "@src/store/VideoAtom";
+import { Socket } from "socket.io-client";
 
 type Props = {
   setIsCall: React.Dispatch<React.SetStateAction<boolean>>;
+  socket: Socket;
 };
 
-export default function JoinPage({ setIsCall }: Props) {
+export default function JoinPage({ setIsCall, socket }: Props) {
   const [roomName, setRoomName] = useAtom(roomNameAtom);
   const [nickName, setNickName] = useAtom(nickNameAtom);
 
@@ -24,6 +26,7 @@ export default function JoinPage({ setIsCall }: Props) {
       return;
     }
     setIsCall(true);
+    socket.emit("join_room", roomName, nickName);
   };
 
   return (
