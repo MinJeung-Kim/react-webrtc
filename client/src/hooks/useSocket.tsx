@@ -1,8 +1,5 @@
+import { socket } from "@src/utils/socket";
 import { useEffect } from "react";
-import io from "socket.io-client";
-
-const baseURL: string = import.meta.env.VITE_REACT_APP_BASE_URL ?? "";
-const socket = io(baseURL);
 
 interface SignalData {
   caller: string; // 호출자 ID
