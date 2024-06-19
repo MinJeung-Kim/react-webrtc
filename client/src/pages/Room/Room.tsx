@@ -47,7 +47,6 @@ export default function RoomPage() {
     cameraOptions,
     audioOptions,
     initializePeerConnection,
-    peerConnection,
     createOffer,
     createAnswer,
     setRemoteDescription,
